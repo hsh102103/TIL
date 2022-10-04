@@ -1,5 +1,3 @@
-package programmers;
-
 import java.util.HashMap;
 
 public class KAKAO_TECH_INTERNSHIP_성격유형검사하기 {
