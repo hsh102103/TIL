@@ -1,3 +1,5 @@
+package programmers;
+
 public class KAKAO_TECH_INTERNSHIP_코딩테스트공부 {
     public static void main(String[] args) {
 
