@@ -20,15 +20,19 @@ public class BOJ_나3곱2 {
 
         marked = new boolean[N];
         permutation(0);
-
+        for (int i = 0; i < N; i++) {
+            System.out.print(sel[i]+" ");
+        }
     }
-
+    static boolean flag;
     static void permutation(int cnt) {
+        if(flag) return;
         if (cnt == N) {
-            System.out.println(Arrays.toString(sel));
+            flag = true;
             return;
         }
         for (int i = 0; i < N; i++) {
+            if(flag) return;
             if (marked[i]) continue;
             if (cnt != 0) {
                 if (sel[cnt - 1] * 2 != data[i] && (sel[cnt - 1] / 3 != data[i] || sel[cnt - 1] % 3 != 0)) {
