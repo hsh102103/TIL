@@ -1,7 +1,10 @@
 package baekjoon;
 
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * 완전탐색 문제
@@ -14,23 +17,39 @@ public class BOJ_십자가찾기 {
     static StringBuilder sb = new StringBuilder();
     static int[] dr = {-1, 1, 0, 0};
     static int[] dc = {0, 0, -1, 1};
+    static boolean[][] marked;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-        sc.nextLine();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
         // map 배열 선언 및 초기화
         map = new char[N][M];
+        marked = new boolean[N][M];
         for (int r = 0; r < N; r++) {
-            String s = sc.nextLine();
+            String s = br.readLine();
             for (int c = 0; c < M; c++) {
-                map[r][c] = s.charAt(c);
+                char character = s.charAt(c);
+                map[r][c] = character;
+                // 다 만들었나 마지막에 체크하는 배열
+                if (character == '*') {
+                    marked[r][c] = true;
+                }
             }
         }
 
         search();
+
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < M; c++) {
+                if (marked[r][c]) {
+                    System.out.println(-1);
+                    return;
+                }
+            }
+        }
         System.out.println(res);
         System.out.println(sb);
     }
@@ -50,6 +69,9 @@ public class BOJ_십자가찾기 {
                             if (map[nr][nc] != '*') break outer;
                         }
                         // 사방이 *인 경우
+                        // marked배열 처리
+                        marked[r][c] = false;
+                        changeMarked(r, c, len);
                         res++;
                         sb.append((r + 1) + " " + (c + 1) + " " + len + "\n");
                         len++;
@@ -58,6 +80,14 @@ public class BOJ_십자가찾기 {
             }
         }
     } // exit search
+
+    private static void changeMarked(int r, int c, int len) {
+        for (int i = 0; i < 4; i++) {
+            int nr = r + dr[i] * len;
+            int nc = c + dc[i] * len;
+            marked[nr][nc] = false;
+        }
+    }
 
     private static boolean isNotRange(int r, int c) {
         return r < 0 || r >= N || c < 0 || c >= M;
