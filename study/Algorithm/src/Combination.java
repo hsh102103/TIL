@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Combination {
     static int N, R; // N 중에 R개 선택하여 조합
@@ -30,8 +29,6 @@ public class Combination {
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
         N = 6;
         R = 2;
         data = new int[]{1, 2, 3, 4, 5, 6};
