@@ -33,5 +33,5 @@ setter를 이용해 클라이언트가 직접 세팅해줄 수 있도록 구현�
 ## 예제
 v1의 경우, strategy pattern을 사용하지 않은 경우입니다. <br/>
 v2의 경우, strategy pattern을 사용한 경우입니다.
-- [movable](./movable)
-- [robot](./robot)
+- [movable](./example1)
+- [robot](./example2)
