@@ -33,7 +33,6 @@ public class BOJ_숫자재배치 {
 
     static void permutation(int cnt, int res) {
         if (cnt == arr.length) {
-            if( (res+"").length() != arr.length) return;
             if (res < B) {
                 output = Math.max(output, res);
             }
@@ -42,6 +41,7 @@ public class BOJ_숫자재배치 {
 
         for (int i = 0; i < arr.length; i++) {
             if (marked[i]) continue;
+            if(cnt == 0 && arr[i] == 0) continue;
             marked[i] = true;
 
             permutation(cnt + 1, res * 10 + arr[i]);
