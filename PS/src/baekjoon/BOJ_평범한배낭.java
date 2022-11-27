@@ -1,7 +1,14 @@
 package baekjoon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+/**
+ * 0-1 Knapsack problem. <br>
+ * N개의 물건이 각각 무게(W)와 가치(V)를 가질 때,
+ * 최대 무게 K를 넘지않는 선에서 넣을 수 있는 가치의 최대값을 구하는 문제.
+ */
 public class BOJ_평범한배낭 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -9,24 +16,39 @@ public class BOJ_평범한배낭 {
         int N = sc.nextInt();
         int K = sc.nextInt();
 
-        int[][] items = new int[N + 1][2]; // [0]무게, [1]가치
-
-        for (int i = 1; i < items.length; i++) {
-            items[i][0] = sc.nextInt();
-            items[i][1] = sc.nextInt();
+        arr = new Object[N];
+        for (int i = 0; i < arr.length; i++) {
+            int weight = sc.nextInt();
+            int value = sc.nextInt();
+            arr[i] = new Object(weight, value);
         }
+        List<Object> select = new ArrayList<>();
+        dfs(K, 0,0,0);
+        System.out.println(res);
+    }
+    static int res;
+    static Object[] arr;
 
-        int[][] dp = new int[N + 1][K + 1]; // [물건번호][무게] = 가치
-        for (int i = 1; i < dp.length; i++) {
-            for (int j = 1; j < dp[i].length; j++) {
-                if (j < items[i][0]) {
-                    dp[i][j] = dp[i - 1][j];
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i-1][j - items[i][0]] + items[i][1]);
-                }
-            }
-        } // exit for(i)
+    static void dfs(int K, int depth, int weight, int value) {
+        if (depth == arr.length) {
+            res = Math.max(res, value);
+            return;
+        }
+        if (weight + arr[depth].weight <= K) {
+            dfs(K, depth + 1, weight + arr[depth].weight, value + arr[depth].value);
+        }
+        if (weight <= K) {
+            dfs(K, depth+1, weight, value);
+        }
+    }
 
-        System.out.println(dp[N][K]);
+    static class Object {
+        int weight;
+        int value;
+
+        public Object(int weight, int value) {
+            this.weight = weight;
+            this.value = value;
+        }
     }
 }
