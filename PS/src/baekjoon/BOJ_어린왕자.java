@@ -15,6 +15,8 @@ public class BOJ_어린왕자 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
+
         int T = sc.nextInt();
         for (int tc = 0; tc < T; tc++) {
             Center start = new Center(sc.nextInt(), sc.nextInt());
@@ -25,32 +27,31 @@ public class BOJ_어린왕자 {
             for (int i = 0; i < N; i++) {
                 Center curr = new Center(sc.nextInt(), sc.nextInt());
                 int diameter = sc.nextInt();
-                if (confirmDistance(start, end, curr, diameter)) {
+                if (confirmDistance(start, end, curr, diameter) == 1) {
                     res++;
                 }
             }
-            System.out.println(res);
+            sb.append(res+"\n");
         }
+        System.out.println(sb);
     }
 
-    static boolean confirmDistance(Center start, Center end, Center curr, int diameter) {
-        boolean flag = false;
-        // 두 점 사이의 거리가 반지름보다 작으면 true
+    static int getDistance(Center circle1, Center circle2) {
+        return (int)Math.sqrt(Math.pow((circle1.x - circle2.x), 2) + Math.pow((circle1.y - circle2.y), 2));
+    }
+    static int confirmDistance(Center start, Center end, Center curr, int diameter) {
         // 밑변^2 + 높이^2
-        int distanceToStart = (int)Math.sqrt(Math.pow((start.x - curr.x), 2) + Math.pow((start.y - curr.y), 2));
-        int distanceToEnd = (int)Math.sqrt(Math.pow((end.x - curr.x), 2) + Math.pow((end.y - curr.y), 2));
+        int distanceToStart = getDistance(start, curr);
+        int distanceToEnd = getDistance(end, curr);
 
+        // 두 점 사이의 거리가 반지름보다 작으면 cnt++;
+        int cnt = 0;
         if(distanceToStart < diameter){
-            flag = true;
+            cnt++;
         }
         if(distanceToEnd < diameter){
-            if(flag){
-                flag = false;
-                // start, end 모두 반지름보다 작으면 false
-            }else{
-                flag = true;
-            }
+            cnt++;
         }
-        return flag;
+        return cnt;
     }
 }
