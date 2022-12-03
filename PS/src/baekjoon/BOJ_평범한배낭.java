@@ -22,7 +22,6 @@ public class BOJ_평범한배낭 {
             int value = sc.nextInt();
             arr[i] = new Object(weight, value);
         }
-        List<Object> select = new ArrayList<>();
         dfs(K, 0,0,0);
         System.out.println(res);
     }
