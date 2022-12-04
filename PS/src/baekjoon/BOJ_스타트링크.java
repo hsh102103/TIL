@@ -1,11 +1,12 @@
 package baekjoon;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class BOJ_스타트링크 {
+    static int F, S, G, U, D;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -15,38 +16,52 @@ public class BOJ_스타트링크 {
         U = sc.nextInt();
         D = sc.nextInt();
 
-        arr = new int[F+1];
-        Arrays.fill(arr, -1);
-        bfs(S);
-        if (arr[G] == -1) {
+        int res = bfs(S);
+        if (res == Integer.MAX_VALUE) {
             System.out.println("use the stairs");
-        }else {
-            System.out.println(arr[G]);
+        } else {
+            System.out.println(res);
         }
     }
-    static int F,S,G,U,D;
-    static int[] arr;
-    private static void bfs(int S) {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(S);
-        arr[S] = 0;
+
+    private static int bfs(int S) {
+        int res = Integer.MAX_VALUE;
+        Queue<Node> q = new LinkedList<>();
+        boolean[] marked = new boolean[F + 1];
+        q.add(new Node(S, 0));
+        marked[S] = true;
+
+
         while (!q.isEmpty()) {
-            if(arr[G] != -1) break;
-            Integer curr = q.poll();
-            if(arr[curr] == -1) continue;
-            if(isRange(curr+U) && (arr[curr+U] == -1 ||arr[curr+U] > arr[curr]+1)) {
-                arr[curr + U] = arr[curr] + 1;
-                q.add(curr+U);
-            }
-            if(isRange(curr-D) && (arr[curr-D] == -1 ||arr[curr-D] > arr[curr]+1)) {
-                arr[curr - D] = arr[curr] + 1;
-                q.add(curr-D);
+            Node curr = q.poll();
+            if (curr.floor == G){
+                res = curr.cnt;
+                break;
             }
 
+            if (isRange(curr.floor + U) && !marked[curr.floor + U]) {
+                marked[curr.floor+U] = true;
+                q.add(new Node(curr.floor + U, curr.cnt+1));
+            }
+            if (isRange(curr.floor - D) && !marked[curr.floor - D]) {
+                marked[curr.floor-D] = true;
+                q.add(new Node(curr.floor - D, curr.cnt + 1));
+            }
         }
+        return res;
     }
 
     static boolean isRange(int curr) {
-        return curr>0 && curr <=F;
+        return curr > 0 && curr <= F;
+    }
+
+    private static class Node {
+        int floor;
+        int cnt;
+
+        public Node(int floor, int cnt) {
+            this.floor = floor;
+            this.cnt = cnt;
+        }
     }
 }
