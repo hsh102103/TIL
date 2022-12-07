@@ -1,62 +1,51 @@
 package softeer;
 
-import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Softeer_슈퍼컴퓨터클러스터 {
-    static class Node implements Comparable<Node>{
-        int initValue;
-        int increase;
-        int lastValue;
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
 
-        public Node(int initValue){
-            this.initValue = initValue;
-            increase = 0;
-            lastValue = initValue;
+        int N = sc.nextInt();
+        long B = sc.nextLong();
+
+        int[] arr = new int[N];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sc.nextInt();
         }
 
-        @Override
-        public int compareTo(Node o) {
-            return this.lastValue - o.lastValue;
-        }
+        Arrays.sort(arr);
+
+        long ans = binarySearch(arr, B);
+        System.out.println(ans);
     }
 
-    public static void main(String args[]) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        long B = Long.parseLong(st.nextToken());
-
-        st = new StringTokenizer(br.readLine());
-
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        for(int i =0; i < N; i++){
-            pq.add(new Node(Integer.parseInt(st.nextToken())));
-        }
-
-        long usedValue = 0;
-        // pq에서 하나씩 빼서 값 증가시키기
-
-        while(true){
-            Node node = pq.poll();
-
-            long tmpValue = usedValue - (long)Math.pow(node.increase, 2) + (long)Math.pow(node.increase + 1, 2);
-
-            // 분기처리하고 괜찮으면 increase++, lastValue = initValue + increase
-            if(tmpValue > B){
-                pq.add(node);
-                break;
+    static long binarySearch(int[] arr, long B) {
+        long ans = 0;
+        long left = arr[0];
+        long right = arr[arr.length - 1] + (long) Math.sqrt(B);
+        long mid;
+        while (left <= right) {
+            mid = (left + right) / 2;
+            if (calulator(mid, arr, B)) {
+                left = mid +1;
+                ans = mid;
+            }else{
+                right = mid -1;
             }
-
-            usedValue = tmpValue;
-            node.increase = node.increase + 1;
-            node.lastValue = node.initValue + node.increase;
-            pq.add(node);
         }
-
-
-        System.out.println(pq.poll().lastValue);
+        return ans;
     }
 
+    static boolean calulator(long mid, int[] arr, long B) {
+        long cost = 0;
+        for (int i : arr) {
+            if (i < mid) {
+                cost += (mid - i) * (mid - i);
+                if(cost > B) return false;
+            }
+        }
+        return true;
+    }
 }
