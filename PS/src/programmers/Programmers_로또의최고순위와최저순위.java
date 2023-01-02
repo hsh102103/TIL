@@ -1,44 +1,33 @@
 package programmers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Programmers_로또의최고순위와최저순위 {
     public int[] solution(int[] lottos, int[] win_nums) {
-        int[] answer = new int[2];
+        int[] answer;
 
-        int sameNumber = 0;
         int cnt0 = 0;
-        Arrays.sort(lottos);
-        Arrays.sort(win_nums);
-
-        int pointer1 = 0;
-        int pointer2 = 0;
-        while(pointer1 != 6 && pointer2 != 6) {
-            if(lottos[pointer1] == 0) {
+        List<Integer> list = new ArrayList<>();
+        for (int lotto : lottos) {
+            if (lotto == 0) {
                 cnt0++;
-                pointer1++;
                 continue;
             }
-            if(lottos[pointer1] == win_nums[pointer2]){
-                sameNumber++;
-                pointer1++;
-                pointer2++;
-                continue;
-            }
-            if(lottos[pointer1] > win_nums[pointer2]) {
-                pointer2++;
-                continue;
-            }
-            if(lottos[pointer1] < win_nums[pointer2]) {
-                pointer1++;
-                continue;
-            }
-
+            list.add(lotto);
         }
-        int[] rank = {6,6,5,4,3,2,1};
-        answer[0] = rank[sameNumber+cnt0];
-        answer[1] = rank[sameNumber];
-
+        int sameNumber = 0;
+        for (int win_num : win_nums) {
+            if (list.contains(win_num)) {
+                sameNumber++;
+            }
+        }
+        int highRank = 7 - (sameNumber + cnt0);
+        int lowRank = 7 - sameNumber;
+        if (highRank > 6) highRank = 6;
+        if (lowRank > 6) lowRank = 6;
+        answer = new int[]{highRank, lowRank};
         return answer;
     }
 }
